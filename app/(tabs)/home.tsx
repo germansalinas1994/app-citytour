@@ -1,37 +1,91 @@
-import { View, Text, Image, Pressable, Dimensions } from "react-native";
+import {
+  View,
+  Text,
+  ImageBackground,
+  Pressable,
+  Dimensions,
+} from "react-native";
 import React, { useState } from "react";
 import Colors from "../../constants/Colors";
 import { Link } from "expo-router";
-import { useSafeAreaInsets } from 'react-native-safe-area-context'; // Importar useSafeAreaInsets
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function Home() {
   const [isPressed, setIsPressed] = useState(false);
   const { width, height } = Dimensions.get("window");
-  const insets = useSafeAreaInsets(); // Obtener los insets de safe area
-
+  const insets = useSafeAreaInsets(); // Para los márgenes de la safe area
 
   return (
     <View
       style={{
         flex: 1,
         backgroundColor: Colors.background.default,
-        paddingTop: insets.top, // Usar insets para aplicar padding dinámico
+        paddingTop: insets.top, // Aplicar padding dinámico
         paddingBottom: insets.bottom,
       }}
     >
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "space-between" }}>
-        <Image
-          source={require("../../assets/images/home2.png")}
-          style={{ width: width * 0.9, height: height * 0.5, marginTop: 35 }}
-          resizeMode="contain"
+      {/* Imagen de fondo */}
+      <ImageBackground
+        source={require("../../assets/images/catedral.jpg")}
+        style={{
+          flex: 1,
+          width: width,
+          height: height,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+        resizeMode="cover"
+      >
+        {/* Capa semi-transparente para que el texto se distinga */}
+        <View
+          style={{
+            position: "absolute",
+            top: 0,
+            bottom: 0,
+            left: 0,
+            right: 0,
+            backgroundColor: "rgba(0, 0, 0, 0.5)", // Fondo negro semi-transparente
+          }}
         />
-        <View style={{ alignItems: "center", marginBottom: height * 0.6 }}>
-          <Text style={{ fontFamily: "outfit-Bold", fontSize: 30, textAlign: "center", color: Colors.text.primary, width: width * 0.8 }}>
-            Listo para hacer un nuevo amigo?
+
+        {/* Contenido sobre la imagen */}
+        <View
+          style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+        >
+          <Text
+            style={{
+              fontFamily: "outfit-Bold",
+              fontSize: 30,
+              textAlign: "center",
+              color: Colors.text.white,
+              width: width * 0.8,
+            }}
+          >
+            ¡Bienvenido a La Plata Tour!
           </Text>
-          <Text style={{ fontFamily: "outfit", fontSize: 18, textAlign: "center", marginTop: 10, width: width * 0.8 }}>
-            Sumate a adoptar una mascota, darle un hogar y hacerla feliz.
+          <Text
+            style={{
+              fontFamily: "outfit",
+              fontSize: 18,
+              textAlign: "center",
+              marginTop: 10,
+              width: width * 0.8,
+              color: Colors.text.white,
+            }}
+          >
+            Explora la ciudad de La Plata y descubre todos sus rincones mágicos
+            con nuestra app.
           </Text>
+        </View>
+
+        <View
+          style={{
+            position: "absolute",
+            bottom: height * 0.1, // Ajusta este valor para mover el botón más arriba o abajo
+            width: width * 0.5,
+            alignItems: "center",
+          }}
+        >
           <Link href="/(tabs)/find" asChild>
             <Pressable
               onPressIn={() => setIsPressed(true)}
@@ -39,7 +93,7 @@ export default function Home() {
               style={{
                 padding: 14,
                 marginTop: 30,
-                backgroundColor: Colors.background.secondaryButton,
+                backgroundColor: Colors.background.primaryButton,
                 width: width * 0.5,
                 borderRadius: 20,
                 shadowColor: "#000",
@@ -49,11 +103,20 @@ export default function Home() {
                 elevation: isPressed ? 2 : 5,
               }}
             >
-              <Text style={{ fontFamily: "outfit-Medium", fontSize: 20, textAlign: "center" }}>Comenzar</Text>
+              <Text
+                style={{
+                  fontFamily: "outfit-Medium",
+                  fontSize: 20,
+                  textAlign: "center",
+                  color: Colors.text.white,
+                }}
+              >
+                Comenzar Tour
+              </Text>
             </Pressable>
           </Link>
         </View>
-      </View>
+      </ImageBackground>
     </View>
   );
 }

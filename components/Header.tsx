@@ -17,7 +17,7 @@ export default function Header() {
         
         {/* Logo */}
         <Image
-          source={require('@/assets/images/logo.jpg')}
+          // source={require('@/assets/images/logo.jpg')}
           style={styles.logo}
           resizeMode="contain"
         />

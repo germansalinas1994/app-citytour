@@ -81,7 +81,7 @@ const PetDetails = () => {
           {/* Informacion de mascota */}
           <View style={{ position: 'relative' }}>
             <Image
-              source={require("../../assets/images/mascota1.jpeg")}
+              // source={require("../../assets/images/mascota1.jpeg")}
               style={{
                 width: "100%",
                 height: 400,

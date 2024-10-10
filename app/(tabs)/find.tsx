@@ -37,7 +37,7 @@ export default function Find() {
           }}
         >
           <Image
-            source={require("../../assets/images/mascota1.jpeg")}
+            // source={require("../../assets/images/mascota1.jpeg")}
             resizeMode="cover"
             style={{
               width: "100%",

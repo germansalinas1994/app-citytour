@@ -1,87 +1,60 @@
-/**
- * Below are the colors that are used in the app. The colors are defined in the light and dark mode.
- * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
- */
 export default {
   background: {
-    default: "#D6B8A1", // Principal color
-    paper: "#F3E8DD", // Color for cards or modals
-    dark: "#643131", // Dark color for background
-    primaryButton: "#A68B76", // Primary color for buttons
-    secondaryButton: "#FBEADD",
-    clearGray: "#F5F5F5",
-
+    default: "#F5F5F5",  // Color de fondo claro
+    paper: "#FFFFFF",    // Color para tarjetas o modales
+    dark: "#20232A",     // Fondo en modo oscuro
+    primaryButton: "#4285F4", // Botón principal azul (Google)
+    secondaryButton: "#E0E0E0", // Botón secundario gris claro
+    clearGray: "#F5F5F5", // Gris claro para áreas despejadas
   },
   text: {
-    primary: "#000000", // Black
-    secondary: "#643131", // Secondary color for text
-    disabled: "#A9A9A9", // Disabled text style
-    hint: "#FFF0E5", // Light hint text
-    clear: "#D9D9D9", // Clear text
-    white: "#FFFFFF", // White text
+    primary: "#212121",   // Texto principal (negro)
+    secondary: "#757575", // Texto secundario gris oscuro
+    disabled: "#9E9E9E",  // Texto deshabilitado
+    hint: "#BDBDBD",      // Texto de pista gris claro
+    clear: "#D9D9D9",     // Texto claro
+    white: "#FFFFFF",     // Texto blanco
   },
   primary: {
-    main: "#D6B8A1",
-    light: "#FFF0E5",
-    dark: "#A68B76",
-    contrastText: "#FFFFFF",
+    main: "#4285F4",      // Azul de Google
+    light: "#D0E7FF",     // Azul claro
+    dark: "#2A56C6",      // Azul oscuro
+    contrastText: "#FFFFFF", // Texto blanco
   },
   secondary: {
-    main: "#A68B76",
-    light: "#D6B8A1",
-    dark: "#643131",
-    contrastText: "#FFFFFF",
+    main: "#34A853",      // Verde de Google
+    light: "#C8E6C9",     // Verde claro
+    dark: "#0F9D58",      // Verde oscuro
+    contrastText: "#FFFFFF", // Texto blanco
   },
   error: {
-    main: "#f44336",
-    light: "#e57373",
-    dark: "#d32f2f",
-    contrastText: "#FFFFFF",
+    main: "#EA4335",      // Rojo de error
+    light: "#EF9A9A",     // Rojo claro
+    dark: "#D32F2F",      // Rojo oscuro
+    contrastText: "#FFFFFF", // Texto blanco
   },
   warning: {
-    main: "#ff9800",
-    light: "#ffb74d",
-    dark: "#f57c00",
-    contrastText: "#FFFFFF",
+    main: "#FBBC05",      // Amarillo de advertencia
+    light: "#FFE082",     // Amarillo claro
+    dark: "#F57C00",      // Amarillo oscuro
+    contrastText: "#212121", // Texto oscuro
   },
   info: {
-    main: "#2196f3",
-    light: "#64b5f6",
-    dark: "#1976d2",
-    contrastText: "#FFFFFF",
+    main: "#4285F4",      // Azul de información (igual que primary)
+    light: "#D0E7FF",     // Azul claro
+    dark: "#2A56C6",      // Azul oscuro
+    contrastText: "#FFFFFF", // Texto blanco
   },
   success: {
-    main: "#4caf50",
-    light: "#81c784",
-    dark: "#388e3c",
-    contrastText: "#FFFFFF",
+    main: "#34A853",      // Verde de éxito (igual que secondary)
+    light: "#C8E6C9",     // Verde claro
+    dark: "#0F9D58",      // Verde oscuro
+    contrastText: "#FFFFFF", // Texto blanco
   },
-  divider: "#D9D9D9",
-  skeleton: '#E0E0E0',
+  divider: "#E0E0E0",     // Divisores grises
+  skeleton: '#E0E0E0',    // Color para elementos de carga
   shadow: {
-    light: "#e0e0e0",
-    dark: "#616161",
+    light: "#E0E0E0",     // Sombra clara
+    dark: "#616161",      // Sombra oscura
   }
 };
-
-// const tintColorLight = '#0a7ea4';
-// const tintColorDark = '#fff';
-
-// export const Colors = {
-//   light: {
-//     text: '#11181C',
-//     background: '#fff',
-//     tint: tintColorLight,
-//     icon: '#687076',
-//     tabIconDefault: '#687076',
-//     tabIconSelected: tintColorLight,
-//   },
-//   dark: {
-//     text: '#ECEDEE',
-//     background: '#151718',
-//     tint: tintColorDark,
-//     icon: '#9BA1A6',
-//     tabIconDefault: '#9BA1A6',
-//     tabIconSelected: tintColorDark,
-//   },
-// };
