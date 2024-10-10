@@ -12,9 +12,6 @@
     },
     "ios": {
       "supportsTablet": true,
-      "buildProperties": {
-        "useFrameworks": "static"
-      },
       "bundleIdentifier": "com.gsalinas1994.app-citytour",
       "config": {
         "googleMapsApiKey": "AIzaSyBBJIrttnucMMloI5Q0tMqC0qOUCwCxg1E"
