@@ -1,87 +1,64 @@
-import { View, Image, Dimensions, Pressable, Text } from "react-native";
-import React from "react";
-import Colors from "../../constants/Colors";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import Icon from "react-native-vector-icons/FontAwesome";
-import { Link } from "expo-router";
+import React, { useState, useEffect } from "react";
+import { View, StyleSheet } from "react-native";
+import MapView, { Polyline, Marker } from "react-native-maps";
+import * as Location from "expo-location";
+import { useNavigation } from "expo-router";
+import { db } from "../../config/FirebaseConfig";
+import { LA_PLATA_COORDENADAS } from "../../constants/Coordenadas"; // Asegúrate de ajustar la ruta según tu estructura
 
-export default function Find() {
-  const { width, height } = Dimensions.get("window");
-  const insets = useSafeAreaInsets();
+import { collection, getDocs } from "firebase/firestore";
+
+export default function HomeScreen() {
+  const [atracciones, setAtracciones] = useState([]);
+  const [ubicacionUsuario, setUbicacionUsuario] =
+    useState<Location.LocationObjectCoords | null>(null);
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    (async () => {
+      // Solicitar permiso de ubicación
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        console.log("Permiso de ubicación denegado");
+        return;
+      }
+
+      // Obtener ubicación del usuario
+      let location = await Location.getCurrentPositionAsync({});
+      setUbicacionUsuario(location.coords);
+    })();
+  }, []);
+
+
 
   return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: Colors.background.paper,
-        paddingTop: insets.top,
-        paddingBottom: insets.bottom,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      {/* ACA VA IR EL MAPA */}
-      <Link href="/pet-details" asChild>
-        <Pressable
-          style={{
-            width: width * 1,
-            height: height * 0.7,
-            overflow: "hidden",
-            alignItems: "center",
-            justifyContent: "center",
-            shadowColor: Colors.text.primary,
-            shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: 0.8,
-            shadowRadius: 5,
-            elevation: 5,
+    <View style={styles.container}>
+      {ubicacionUsuario && (
+        <MapView
+          style={styles.map}
+          initialRegion={{
+            latitude: LA_PLATA_COORDENADAS.latitude,
+            longitude: LA_PLATA_COORDENADAS.longitude,
+            latitudeDelta: 0.05,
+            longitudeDelta: 0.05,
           }}
+          showsUserLocation={true}
         >
-          <Image
-            // source={require("../../assets/images/mascota1.jpeg")}
-            resizeMode="cover"
-            style={{
-              width: "100%",
-              height: "100%",
+          <Marker
+            coordinate={{
+              latitude: ubicacionUsuario.latitude,
+              longitude: ubicacionUsuario.longitude,
             }}
+            title="Tu ubicación"
+            description="Aquí te encuentras"
           />
-        </Pressable>
-      </Link>
-
-      {/* Contenedor de botones */}
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          width: width * 0.6,
-          marginTop: 20,
-        }}
-      >
-        {/* <Pressable
-          style={{
-            backgroundColor: Colors.error.main,
-            width: 60,
-            height: 60,
-            borderRadius: 30,
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Icon name="times" size={30} color={Colors.text.white} />
-        </Pressable>
-
-        <Pressable
-          style={{
-            backgroundColor: Colors.success.main,
-            width: 60,
-            height: 60,
-            borderRadius: 30,
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Icon name="check" size={30} color={Colors.text.white} />
-        </Pressable> */}
-      </View>
+        </MapView>
+      )}
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: { flex: 1 },
+  map: { flex: 1 },
+});
