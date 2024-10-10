@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet } from "react-native";
-import MapView, { Polyline, Marker } from "react-native-maps";
+import MapView, { PROVIDER_GOOGLE, Polyline, Marker } from 'react-native-maps';
 import * as Location from "expo-location";
 import { useNavigation } from "expo-router";
 import { db } from "../../config/FirebaseConfig";

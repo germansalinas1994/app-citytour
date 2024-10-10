@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "petmatch",
-    "slug": "petmach",
+    "name": "app-citytour",
+    "slug": "app-citytour",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -12,12 +12,24 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.gsalinas1994.petmach"
+      "buildProperties": {
+        "useFrameworks": "static"
+      },
+      "bundleIdentifier": "com.gsalinas1994.app-citytour",
+      "config": {
+        "googleMapsApiKey": "AIzaSyBBJIrttnucMMloI5Q0tMqC0qOUCwCxg1E"
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
+      },
+      "package": "com.gsalinas1994.appcitytour",
+      "config": {
+        "googleMaps": {
+          "apiKey": "32:02:B9:7F:C5:FD:5C:1B:5B:B2:D9:02:8B:CA:1A:D5:E9:C7:23:3F"
+        }
       }
     },
     "web": {
@@ -26,14 +38,15 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
-      "expo-router"
+      "expo-router",
+      "expo-build-properties"
     ],
     "experiments": {
       "typedRoutes": true
     },
     "extra": {
       "eas": {
-        "projectId": "9bc6ac50-0b8d-423d-b55f-753bf8bb020c"
+        "projectId": "10fee32c-5352-4597-aec5-063af77c5610"
       }
     },
     "owner": "gsalinas1994",
@@ -41,7 +54,7 @@
       "policy": "appVersion"
     },
     "updates": {
-      "url": "https://u.expo.dev/9bc6ac50-0b8d-423d-b55f-753bf8bb020c"
+      "url": "https://u.expo.dev/10fee32c-5352-4597-aec5-063af77c5610"
     },
     "sdkVersion": "51.0.0"
   }
