@@ -30,18 +30,18 @@ export default function TabLayout() {
       <Tabs.Screen
         name="find"
         options={{
-          title: "Encontrar",
+          title: "Recorrer",
           tabBarIcon: ({ color, size }) => (
-            <MaterialIcons name="pets" size={28} color={color} />
+            <MaterialIcons name="place" size={28} color={color} />
           ),
         }}
       />
       <Tabs.Screen
         name="likes"
         options={{
-          title: "Interesados",
+          title: "Lugares",
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="heart" size={28} color={color} />
+            <Ionicons name="search" size={28} color={color} />
           ),
         }}
       />

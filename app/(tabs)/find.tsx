@@ -20,7 +20,7 @@ export default function Find() {
         alignItems: "center",
       }}
     >
-      {/* Contenedor de la imagen */}
+      {/* ACA VA IR EL MAPA */}
       <Link href="/pet-details" asChild>
         <Pressable
           style={{
@@ -56,7 +56,7 @@ export default function Find() {
           marginTop: 20,
         }}
       >
-        <Pressable
+        {/* <Pressable
           style={{
             backgroundColor: Colors.error.main,
             width: 60,
@@ -80,7 +80,7 @@ export default function Find() {
           }}
         >
           <Icon name="check" size={30} color={Colors.text.white} />
-        </Pressable>
+        </Pressable> */}
       </View>
     </View>
   );
