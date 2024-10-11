@@ -56,5 +56,13 @@ export default {
   shadow: {
     light: "#E0E0E0",     // Sombra clara
     dark: "#616161",      // Sombra oscura
-  }
+  },
+  varios: {
+    text: 'white', //turquesa
+    subtext: '#55cfd6', //turquesa claro
+    background: '#0a97b7', //amarillo pastel
+    icon: '#f1651d', //naranja fuerte
+    subicon: '#ffbb83', //naranja pastel
+    tabIconDefault: '#687076',
+  },
 };

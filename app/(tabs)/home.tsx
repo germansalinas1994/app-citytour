@@ -93,7 +93,7 @@ export default function Home() {
               style={{
                 padding: 14,
                 marginTop: 30,
-                backgroundColor: Colors.background.primaryButton,
+                backgroundColor: Colors.varios.background,
                 width: width * 0.5,
                 borderRadius: 20,
                 shadowColor: "#000",
