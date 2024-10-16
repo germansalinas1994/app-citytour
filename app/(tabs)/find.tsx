@@ -7,11 +7,11 @@ import { LA_PLATA_COORDENADAS } from "../../constants/Coordenadas";
 import { markers } from "../../assets/markers"; 
 import CustomMarker from "@/components/CustomMarker";
 import MapViewDirections from "react-native-maps-directions";
-import { GOOGLE_MAPS_KEY } from "@env";
 
 export default function HomeScreen() {
   const [ubicacionUsuario, setUbicacionUsuario] = useState(null);
   const navigation = useNavigation();
+  const GOOGLE_MAPS_KEY = process.env.EXPO_PUBLIC_GOOGLE_MAPS_KEY;
 
   useEffect(() => {
     (async () => {
