@@ -6,6 +6,8 @@ import { useNavigation } from "expo-router";
 import { LA_PLATA_COORDENADAS } from "../../constants/Coordenadas";
 import { markers } from "../../assets/markers"; 
 import CustomMarker from "@/components/CustomMarker";
+import MapViewDirections from "react-native-maps-directions";
+import { GOOGLE_MAPS_KEY } from "@env";
 
 export default function HomeScreen() {
   const [ubicacionUsuario, setUbicacionUsuario] = useState(null);
@@ -44,7 +46,33 @@ export default function HomeScreen() {
             >
               <CustomMarker image={marker.image} title={marker.title} />
             </Marker>
+            // <MapViewDirections 
+            //   origin={}
+            //   destination={}
+            //   apikey={}
+            // >
+            // </MapViewDirections>
+            
           ))}
+
+        {markers.map((marker, index) => {
+          if (index < markers.length - 1) {
+            const nextMarker = markers[index + 1];
+
+            return (
+              <MapViewDirections
+                key={index}
+                origin={{ latitude: marker.latitude, longitude: marker.longitude }}
+                destination={{ latitude: nextMarker.latitude, longitude: nextMarker.longitude }}
+                apikey={GOOGLE_MAPS_KEY}
+                strokeWidth={5}
+                mode="WALKING"
+                strokeColor="black"
+                precision="low"
+              />
+            );
+          }
+        })}
         </MapView>
       )}
     </View>
