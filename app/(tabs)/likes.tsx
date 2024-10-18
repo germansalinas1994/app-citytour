@@ -1,234 +1,97 @@
-// Likes.tsx
-import React, { useState, useEffect } from "react";
-import {
-  View,
-  StyleSheet,
-  Text,
-  FlatList,
-  TouchableOpacity,
-} from "react-native";
-import Header from "../../components/Header";
-import { db } from "../../config/FirebaseConfig";
-import { collection, onSnapshot, DocumentData } from "firebase/firestore";
-import { Image } from "react-native-expo-image-cache";
-import SkeletonItem from "../../components/SkeletonItem";
+// PuntosTuristicosScreen.tsx
+import React from 'react';
+import { StyleSheet, Text, View, FlatList, Image } from 'react-native';
 import Colors from "../../constants/Colors";
-import UserModal from "../../components/UserModal";
+import { markers } from "../../assets/markers"; // Importa los markers
 
-type User = {
-  id: string;
-  nombre: string;
-  imagen: string;
-  localidad: string;
-  edad: number;
-  descripcion: string;
-};
-
-export default function Likes() {
-  const [users, setUsers] = useState<User[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [selectedUser, setSelectedUser] = useState<User | null>(null);
-  const [modalVisible, setModalVisible] = useState(false);
-
-  useEffect(() => {
-    // Usar onSnapshot para escuchar cambios en tiempo real en la colección "users"
-    const usersCollection = collection(db, "users");
-    const subscriber = onSnapshot(usersCollection, (snapshot) => {
-      const usersList = snapshot.docs.map((doc) => {
-        const data = doc.data() as DocumentData;
-        return {
-          id: doc.id,
-          ...doc.data(),
-          // tambien se puede hacer asi
-          // id: doc.id,
-          // nombre: data.nombre,
-          // imagen: data.imagen
-        } as User;
-      });
-      setUsers(usersList);
-      setLoading(false);
-    });
-
-    // Cleanup: Desuscribirse de los cambios cuando el componente se desmonte
-    return () => subscriber();
-  }, []);
-
-  const renderSkeleton = () => (
-    <View style={styles.userCard}>
-      <SkeletonItem
-        width={50}
-        height={50}
-        borderRadius={25}
-        style={styles.skeletonImage}
-      />
-      <SkeletonItem
-        width={100}
-        height={20}
-        borderRadius={5}
-        style={styles.skeletonText}
-      />
-    </View>
-  );
-
-  const openModal = (user: User) => {
-    setSelectedUser(user); // Pasar directamente el objeto user
-    setModalVisible(true);
-  };
-
-  const closeModal = () => {
-    setModalVisible(false);
-    setSelectedUser(null);
-  };
-
-  const renderUserItem = ({ item }: { item: User }) => (
-    <View style={styles.userCard}>
-      <TouchableOpacity onPress={() => openModal(item)}>
-        <Image uri={item.imagen} style={styles.profileImage} />
-      </TouchableOpacity>
-
-      <Text style={styles.userName}>{item.nombre}</Text>
-    </View>
-  );
-
+export default function PuntosTuristicosScreen() {
   return (
-    <View>
-      <Header />
-      {loading ? (
-        // Renderizar una lista de skeletons mientras los datos se cargan
+    <View style={styles.mainContainer}>
+      <View style={styles.container}>
+        <Text style={styles.titleText}>Puntos Turísticos</Text>
+        <Text style={styles.subtitleText}>de la Ciudad de La Plata</Text>
+      </View>
+
+      <View style={styles.separator}>
         <FlatList
-          data={Array(10).fill({})} // Crear un array de longitud 10 para los skeletons
-          renderItem={renderSkeleton}
-          keyExtractor={(_, index) => index.toString()}
+          data={markers}
+          keyExtractor={(item) => item.id.toString()} // Convertir el id a string
+          renderItem={({ item }) => (
+            <View style={styles.itemContainer}>
+              <Image source={item.image} style={styles.imagen} />
+              <View style={styles.textContainer}>
+                <Text style={styles.nombre}>{item.title}</Text>
+                <Text style={styles.descripcion}>{item.description}</Text>
+              </View>
+            </View>
+          )}
         />
-      ) : (
-        // Renderizar la lista de usuarios una vez que los datos se hayan cargado
-        <>
-          <FlatList
-            data={users}
-            renderItem={renderUserItem}
-            keyExtractor={(item) => item.id}
-          />
-          <UserModal
-            visible={modalVisible}
-            onClose={closeModal}
-            user={selectedUser}
-          />
-        </>
-      )}
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  userCard: {
-    flexDirection: "row",
+  mainContainer: {
+    flex: 1,
+    backgroundColor: Colors.varios.background,
+  },
+  container: {
+    flex: 1,
+    marginVertical: 5,
+    backgroundColor: Colors.varios.background,
     padding: 10,
-    alignItems: "center",
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.divider,
   },
-  profileImage: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
+  itemContainer: {
+    flexDirection: 'row',
+    backgroundColor: Colors.varios.subicon,
+    borderRadius: 15,
+    padding: 10,
+    marginVertical: 8,
+    marginHorizontal: 15,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  separator: {
+    height: 550, // Ajusta según lo que necesites
+  },
+  imagen: {
+    width: 80,
+    height: 80,
+    borderRadius: 8,
     marginRight: 10,
   },
-  userName: {
-    fontSize: 16,
-    fontWeight: "bold",
+  titleText: {
+    fontFamily: "outfit-Medium",
+    color: Colors.varios.text,
+    fontSize: 32,
+    textAlign: 'center',
+    marginVertical: 10,
+    marginTop: 60,
   },
-  skeletonImage: {
-    marginRight: 10,
+  subtitleText: {
+    fontFamily: "outfit-Medium",
+    color: Colors.varios.text,
+    fontSize: 20,
+    textAlign: 'center',
+    marginBottom: 5,
   },
-  skeletonText: {
-    marginLeft: 10,
+  textContainer: {
+    flex: 1,
+  },
+  nombre: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    fontFamily: "outfit",
+    color: 'black',
+  },
+  descripcion: {
+    fontSize: 14,
+    fontFamily: "outfit",
+    color: 'black',
   },
 });
-
-// // Likes.tsx
-// import React from 'react';
-// import { View, StyleSheet, Text } from 'react-native';
-// import Header from "../../components/Header";
-// import { db } from "../../config/FirebaseConfig";
-// import { collection, onSnapshot, DocumentData } from "firebase/firestore";
-// import { Image } from 'react-native-expo-image-cache';
-// import DataList from '../../components/DataList';
-// import SkeletonItem from '../../components/SkeletonItem';
-// import Colors from '../../constants/Colors';
-
-// type User = {
-//   id: string;
-//   nombre: string;
-//   imagen: string;
-// };
-
-// export default function Likes() {
-//   const fetchUsers = (): Promise<User[]> => {
-//     return new Promise((resolve) => {
-//       const usersCollection = collection(db, "users");
-//       const subscriber = onSnapshot(usersCollection, (snapshot) => {
-//         const usersList = snapshot.docs.map((doc) => {
-//           const data = doc.data() as DocumentData;
-//           return {
-//             id: doc.id,
-//             nombre: data.nombre ?? 'Unknown', // Default if 'nombre' is not available
-//             imagen: data.imagen ?? '', // Default if 'imagen' is not available
-//           } as User;
-//         });
-//         resolve(usersList);
-//       });
-//     });
-//   };
-
-//   const renderSkeleton = () => (
-//     <View style={styles.userCard}>
-//       <SkeletonItem width={50} height={50} borderRadius={25} style={styles.skeletonImage} />
-//       <SkeletonItem width={100} height={20} borderRadius={5} style={styles.skeletonText} />
-//     </View>
-//   );
-
-//   const renderUserItem = ({ item }: { item: User }) => (
-//     <View style={styles.userCard}>
-//       <Image uri={item.imagen} style={styles.profileImage} />
-//       <Text style={styles.userName}>{item.nombre}</Text>
-//     </View>
-//   );
-
-//   return (
-//     <View>
-//       <Header />
-//       <DataList<User>
-//         fetchData={fetchUsers}
-//         renderItem={renderUserItem}
-//         renderSkeleton={renderSkeleton}
-//         itemKeyExtractor={(item) => item.id}
-//       />
-//     </View>
-//   );
-// }
-
-// const styles = StyleSheet.create({
-//   userCard: {
-//     flexDirection: "row",
-//     padding: 10,
-//     alignItems: "center",
-//     borderBottomWidth: 1,
-//     borderBottomColor: Colors.divider,
-//   },
-//   profileImage: {
-//     width: 50,
-//     height: 50,
-//     borderRadius: 25,
-//     marginRight: 10,
-//   },
-//   userName: {
-//     fontSize: 16,
-//     fontWeight: "bold",
-//   },
-//   skeletonImage: {
-//     marginRight: 10,
-//   },
-//   skeletonText: {
-//     marginLeft: 10,
-//   },
-// });
