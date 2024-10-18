@@ -2,8 +2,8 @@
 import React from 'react';
 import Colors from "../../constants/Colors";
 import { StyleSheet, Text, View, FlatList, Image } from 'react-native';
-
-const puntosTuristicos = [
+import {markers} from '../../assets/markers';
+/*const puntosTuristicos = [
   {
     id: '1',
     nombre: 'Estadio UNO',
@@ -40,7 +40,7 @@ const puntosTuristicos = [
     descripcion: 'Actividades como andar en barquito a pedal',
     imagen: require('../../assets/images/canchaestudiantes.jpeg'), // Imagen local
   },
-];
+]; */
 
 
 export default function PuntosTuristicosScreen() {
@@ -52,19 +52,19 @@ export default function PuntosTuristicosScreen() {
       </View>
 
       <View style={styles.separator}>
-        <FlatList
-          data={puntosTuristicos}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <View style={styles.itemContainer}>
-              <Image source={item.imagen} style={styles.imagen} />
-              <View style={styles.textContainer}>
-                <Text style={styles.nombre}>{item.nombre}</Text>
-                <Text style={styles.descripcion}>{item.descripcion}</Text>
-              </View>
+      <FlatList
+        data={markers} // Usamos los markers importados como data
+        keyExtractor={(item) => item.id.toString()} // Convierte el id a string para usarlo como clave
+        renderItem={({ item }) => (
+          <View style={styles.itemContainer}>
+            <Image source={item.image} style={styles.imagen} />
+            <View style={styles.textContainer}>
+              <Text style={styles.nombre}>{item.title}</Text>
+              <Text style={styles.descripcion}>{item.description}</Text>
             </View>
-          )}
-        />
+          </View>
+        )}
+      />
       </View>
     </View>
   );
