@@ -8,7 +8,8 @@
       },
       "ios": {
         "simulator": true,
-        "buildConfiguration": "Debug"
+        "buildConfiguration": "Debug",
+        "cocoapods": "1.15.2"
       }
     },
     "production": {

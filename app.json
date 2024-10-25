@@ -12,22 +12,14 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.gsalinas1994.appcitytour",
-      "config": {
-        "googleMapsApiKey": "AIzaSyBBJIrttnucMMloI5Q0tMqC0qOUCwCxg1E"
-      }
+      "bundleIdentifier": "com.gsalinas1994.appcitytour"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.gsalinas1994.appcitytour",
-      "config": {
-        "googleMaps": {
-          "apiKey": "AIzaSyDV0JIdgYtzuwHvgSiEwDwVLCDe5qbeecg"
-        }
-      }
+      "package": "com.gsalinas1994.appcitytour"
     },
     "web": {
       "bundler": "metro",
@@ -47,10 +39,13 @@
       }
     },
     "owner": "gsalinas1994",
-    "runtimeVersion": {
-      "policy": "appVersion"
-    },
+    "runtimeVersion": "1.0.0",
 
-    "sdkVersion": "51.0.0"
+    
+
+    "sdkVersion": "51.0.0",
+    "updates": {
+      "url": "https://u.expo.dev/10fee32c-5352-4597-aec5-063af77c5610"
+    }
   }
 }
