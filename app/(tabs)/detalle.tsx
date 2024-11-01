@@ -1,13 +1,50 @@
 import React, { useState } from 'react';
-import { View, Text, Image, StyleSheet, TextInput, ScrollView, Linking, TouchableOpacity, Dimensions  } from 'react-native';
-import {markers} from '../../assets/markers';
+import { View, Text, Image, StyleSheet, TextInput, ScrollView, Linking, TouchableOpacity, Dimensions } from 'react-native';
+import { markers } from '../../assets/markers';
 import Colors from "../../constants/Colors";
+import * as Speech from 'expo-speech'; // Importar la biblioteca de voz
+import Tts from 'react-native-tts'; // Importar Tts
+import Icon from 'react-native-vector-icons/FontAwesome'; // Importar el icono
 
 const screenWidth = Dimensions.get('window').width;
+
+
 
 const MarkerDetailsScreen = () => {
     const [selectedId, setSelectedId] = useState<number | null>(null);
     const selectedMarker = markers.find(marker => marker.id === selectedId);
+
+    
+
+    // Función para reproducir la descripción
+    // const speakDescription = () => {
+    //      if (selectedMarker && selectedMarker.description) {
+    //          console.log("Descripción a hablar:", selectedMarker.description);
+    //          try {
+    //              Speech.speak(selectedMarker.description, {
+    //                  language: 'es-ES', // Cambia el idioma si es necesario
+    //              });
+    //          } catch (error) {
+    //             console.error("Error al hablar:", error);
+    //          }
+    //      } else {
+    //          console.log("No hay descripción para hablar.");
+    //      }
+    //  };
+    const speakDescription = () => {
+        const greeting = 'City Tour La Plata';
+        Speech.speak(greeting)
+    };
+
+    // const speakDescription = () => {
+    //     if (selectedMarker && selectedMarker.description) {
+    //         console.log("Descripción a hablar:", selectedMarker.description);
+    //         Tts.setDefaultLanguage('es-ES'); // Cambia el idioma si es necesario
+    //         Tts.speak(selectedMarker.description);
+    //     } else {
+    //         console.log("No hay descripción para hablar.");
+    //     }
+    // };
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
@@ -22,22 +59,31 @@ const MarkerDetailsScreen = () => {
             {selectedMarker ? (
                 <View style={styles.detailsContainer}>
                     <Image source={selectedMarker.image} style={styles.image} resizeMode="cover"/>
-                    <Text style={styles.title}>{selectedMarker.title}</Text>
+
+                    {/* Contenedor para el título y el botón */}
+                    <View style={styles.titleContainer}>
+                        <Text style={styles.title}>{selectedMarker.title}</Text>
+                        <TouchableOpacity onPress={speakDescription} style={styles.circleButton}>
+                            <Icon name="volume-up" size={20} color="#fff" />
+                            <Text style={styles.buttonText}>Escuchar</Text>
+                        </TouchableOpacity>
+                    </View>
+
                     <Text style={styles.description}>{selectedMarker.description}</Text>
-                    
+
                     {selectedMarker.instagram && (
-                    <TouchableOpacity onPress={() => Linking.openURL(selectedMarker.instagram)} style={styles.linkContainer}>
-                        <Text style={styles.textlink}>Visite la página de </Text>
-                        <Text style={styles.link}>Instagram</Text>
-                    </TouchableOpacity>
-                )}
+                        <TouchableOpacity onPress={() => Linking.openURL(selectedMarker.instagram)} style={styles.linkContainer}>
+                            <Text style={styles.textlink}>Visite la página de </Text>
+                            <Text style={styles.link}>Instagram</Text>
+                        </TouchableOpacity>
+                    )}
 
                     {selectedMarker.sitioOficial && (
                         <TouchableOpacity onPress={() => Linking.openURL(selectedMarker.sitioOficial)} style={styles.linkContainer}>
                             <Text style={styles.textlink}>Visite el </Text>
                             <Text style={styles.link}>Sitio Oficial</Text>
                         </TouchableOpacity>
-                )}
+                    )}
                 </View>
             ) : (
                 <Text style={styles.noMarkerText}>No hay marcador con el ID seleccionado.</Text>
@@ -45,7 +91,6 @@ const MarkerDetailsScreen = () => {
         </ScrollView>
     );
 };
-
 export default MarkerDetailsScreen;
 
 const styles = StyleSheet.create({
@@ -55,6 +100,7 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.varios.background,
         alignItems: 'center',
     },
+    
     linkContainer: {
         flexDirection: 'row',  // Alinea los textos horizontalmente
         alignItems: 'center',   // Centra verticalmente los elementos
@@ -83,14 +129,22 @@ const styles = StyleSheet.create({
         shadowRadius: 5,
         elevation: 5,
     },
+    titleContainer: {
+        flexDirection: 'row', // Alinea el título y el botón en una fila
+        alignItems: 'center', // Centra verticalmente los elementos
+        justifyContent: 'space-between', // Espacia los elementos
+        width: '100%', // Toma el ancho completo del contenedor
+        marginVertical: 10, // Espaciado vertical
+    },
     title: {
         fontSize: 24,
         fontWeight: 'bold',
         marginBottom: 8,
         fontFamily: "outfit",
-        color: 'black', //
+        color: 'black', 
         textAlign: 'left',
         paddingLeft: 25,
+        
     },
     description: {
         fontSize: 16,
@@ -120,12 +174,44 @@ const styles = StyleSheet.create({
         textDecorationLine: 'underline', // Subrayado para el texto del link
         marginBottom: 15,
         lineHeight: 20, 
+        fontFamily: "outfit",
+
     },
     noMarkerText: {
         fontSize: 16,
-        color: '#888',
+        color: 'white',
         textAlign: 'center',
         marginTop: 20,
+        fontFamily: "outfit",
+
     },
-    
+ 
+    icon: {
+        marginRight: 5, // Espacio entre el icono y el borde del botón
+    },
+        button: {
+        flexDirection: 'row', // Para alinear el icono y el texto horizontalmente
+        alignItems: 'center', // Centra verticalmente los elementos
+        backgroundColor: Colors.varios.background,
+        padding: 10,
+        borderRadius: 5,
+        marginVertical: 10,
+    },
+    circleButton: {
+        width: 50, // Ancho del botón
+        height: 50, // Alto del botón
+        borderRadius: 30, // Hace el botón circular
+        backgroundColor: Colors.varios.background, // Color de fondo del botón
+        justifyContent: 'center', // Centra el contenido verticalmente
+        alignItems: 'center', // Centra el contenido horizontalmente
+        marginRight: 2, // Margen derecho para el botón
+
+    },
+    buttonText: {
+        color: 'white',
+        textAlign: 'center',
+        fontSize: 6,
+        fontFamily: "outfit-bold",
+        marginLeft: 5, // Espacio entre el icono y el texto
+    },
 });
