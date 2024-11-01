@@ -27,13 +27,20 @@ const CARD_WIDTH = width * 0.8;
 const SPACING_FOR_CARD_INSET = width * 0.1 - 10;
 
 export default function HomeScreen() {
-  const [ubicacionUsuario, setUbicacionUsuario] = useState(null);
+  interface LocationCoords {
+    latitude: number;
+    longitude: number;
+  }
+  
+  const [ubicacionUsuario, setUbicacionUsuario] = useState<LocationCoords | null>(null);
   const navigation = useNavigation();
   const _map = useRef(null);
   const _scrollView = useRef(null);
   const GOOGLE_MAPS_KEY = process.env.EXPO_PUBLIC_GOOGLE_MAPS_KEY;
   let mapIndex = 0;
   let mapAnimation = new Animated.Value(0);
+  const [estimatedTime, setEstimatedTime] = useState(0);
+
 
   useEffect(() => {
     mapAnimation.addListener(({ value }) => {
@@ -79,6 +86,43 @@ export default function HomeScreen() {
     return { scale };
   });
 
+//#region region // tiempo estimado
+
+  const getRouteTime = async () => {
+    try {
+      const response = await fetch(
+        `https://maps.googleapis.com/maps/api/directions/json?origin=${markers[0].latitude},${markers[0].longitude}&destination=${markers[markers.length - 1].latitude},${markers[markers.length - 1].longitude}&waypoints=${markers.slice(1, -1).map(m => `${m.latitude},${m.longitude}`).join('|')}&mode=walking&key=${GOOGLE_MAPS_KEY}`
+      );
+      const data = await response.json();
+      console.log(data);
+      const estimatedTime = data.routes[0].legs.reduce((total, leg) => total + leg.duration.value, 0); // Total duration in seconds
+      setEstimatedTime(estimatedTime);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const startTrackingUser = async () => {
+    await Location.requestForegroundPermissionsAsync();
+    Location.watchPositionAsync(
+      { accuracy: Location.Accuracy.High, distanceInterval: 1 },
+      (location) => {
+        setUbicacionUsuario({
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+        });
+        // Update map region if necessary
+      }
+    );
+  };
+
+
+  useEffect(() => {
+    getRouteTime();
+    console.log(estimatedTime);
+    startTrackingUser();
+  }, []);
+  //#endregion
 
   useEffect(() => {
     (async () => {
@@ -133,10 +177,11 @@ export default function HomeScreen() {
                   origin={{ latitude: marker.latitude, longitude: marker.longitude }}
                   destination={{ latitude: nextMarker.latitude, longitude: nextMarker.longitude }}
                   apikey={GOOGLE_MAPS_KEY}
-                  strokeWidth={5}
+                  strokeWidth={3}
                   mode="WALKING"
                   strokeColor="black"
                   precision="low"
+                  
                 />
               );
             }
