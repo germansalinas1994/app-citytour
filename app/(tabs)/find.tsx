@@ -31,14 +31,14 @@ export default function HomeScreen() {
     latitude: number;
     longitude: number;
   }
-  
+
   const [ubicacionUsuario, setUbicacionUsuario] = useState<LocationCoords | null>(null);
   const navigation = useNavigation();
   const _map = useRef(null);
   const _scrollView = useRef(null);
   const GOOGLE_MAPS_KEY = process.env.EXPO_PUBLIC_GOOGLE_MAPS_KEY;
   let mapIndex = 0;
-  let mapAnimation = new Animated.Value(0);
+  let mapAnimation = useRef(new Animated.Value(0)).current;
   const [estimatedTime, setEstimatedTime] = useState(0);
 
 
@@ -57,15 +57,18 @@ export default function HomeScreen() {
       const regionTimeout = setTimeout(() => {
         if (mapIndex !== index) {
           mapIndex = index;
-          const { coordinate } = markers[index];
-          _map.current.animateToRegion(
-            {
-              ...coordinate,
-              latitudeDelta: LA_PLATA_COORDENADAS.latitudeDelta,
-              longitudeDelta: LA_PLATA_COORDENADAS.longitudeDelta,
-            },
-            350
-          );
+          const { latitude, longitude } = markers[index];
+          if (_map.current) {
+            _map.current.animateToRegion(
+              {
+                latitude,
+                longitude,
+                latitudeDelta: 0.05,
+                longitudeDelta: 0.05,
+              },
+              350
+            );
+          }
         }
       }, 10);
     });
@@ -80,13 +83,13 @@ export default function HomeScreen() {
 
     const scale = mapAnimation.interpolate({
       inputRange,
-      outputRange: [1, 2.5, 1],
+      outputRange: [0.9, 1, 0.9],
       extrapolate: "clamp",
     });
     return { scale };
   });
 
-//#region region // tiempo estimado
+  //#region region // tiempo estimado
 
   const getRouteTime = async () => {
     try {
@@ -150,22 +153,27 @@ export default function HomeScreen() {
           }}
           showsUserLocation={true}
         >
-          {markers.map((marker, index) => (
-            <Marker
-              key={index}
-              coordinate={{ latitude: marker.latitude, longitude: marker.longitude }}
-              title={marker.title}
-            >
-              <CustomMarker image={marker.image} title={marker.title} />
-            </Marker>
-            // <MapViewDirections 
-            //   origin={}
-            //   destination={}
-            //   apikey={}
-            // >
-            // </MapViewDirections>
+          {markers.map((marker, index) => {
+            const scaleStyle = {
+              transform: [
+                {
+                  scale: interpolations[index].scale,
+                },
+              ],
+            };
 
-          ))}
+            return (
+              <Marker
+                key={index}
+                coordinate={{ latitude: marker.latitude, longitude: marker.longitude }}
+                title={marker.title}
+              >
+                <Animated.View style={[styles.markerWrap,scaleStyle]}>
+                  <CustomMarker image={marker.image} title={marker.title} />
+                </Animated.View>
+              </Marker>
+            );
+          })}
 
           {markers.map((marker, index) => {
             if (index < markers.length - 1) {
@@ -181,7 +189,7 @@ export default function HomeScreen() {
                   mode="WALKING"
                   strokeColor="black"
                   precision="low"
-                  
+
                 />
               );
             }
@@ -254,6 +262,10 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1 },
   map: { flex: 1 },
+  animatedWrapper: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   searchBox: {
     position: 'absolute',
     marginTop: Platform.OS === 'ios' ? 40 : 20,
@@ -336,8 +348,8 @@ const styles = StyleSheet.create({
     color: "#444",
   },
   markerWrap: {
-    alignItems: "center",
-    justifyContent: "center",
+    // alignItems: "center",
+    // justifyContent: "center",
     width: 50,
     height: 50,
   },

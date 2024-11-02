@@ -19,6 +19,12 @@ const styles = StyleSheet.create({
     markerWrapper: {
       alignItems: 'center',
     },
+    selectedMarkerWrapper: {
+      borderWidth: 2,
+      borderColor: 'blue', // Cambia el color o el estilo para el marcador seleccionado
+      borderRadius: 30,
+      padding: 5, // Espacio adicional para el contorno
+    },
     circleContainer: {
       width: 50,
       height: 50,
