@@ -13,7 +13,7 @@ import {
 } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
-import { useNavigation } from "expo-router";
+import { useNavigation, Link } from "expo-router";
 import { LA_PLATA_COORDENADAS } from "../../constants/Coordenadas";
 import { markers } from "../../assets/markers";
 import CustomMarker from "@/components/CustomMarker";
@@ -32,7 +32,8 @@ export default function HomeScreen() {
     longitude: number;
   }
 
-  const [ubicacionUsuario, setUbicacionUsuario] = useState<LocationCoords | null>(null);
+  const [ubicacionUsuario, setUbicacionUsuario] =
+    useState<LocationCoords | null>(null);
   const navigation = useNavigation();
   const _map = useRef(null);
   const _scrollView = useRef(null);
@@ -40,7 +41,6 @@ export default function HomeScreen() {
   let mapIndex = 0;
   let mapAnimation = useRef(new Animated.Value(0)).current;
   const [estimatedTime, setEstimatedTime] = useState(0);
-
 
   useEffect(() => {
     mapAnimation.addListener(({ value }) => {
@@ -78,7 +78,7 @@ export default function HomeScreen() {
     const inputRange = [
       (index - 1) * CARD_WIDTH,
       index * CARD_WIDTH,
-      ((index + 1) * CARD_WIDTH),
+      (index + 1) * CARD_WIDTH,
     ];
 
     const scale = mapAnimation.interpolate({
@@ -94,11 +94,21 @@ export default function HomeScreen() {
   const getRouteTime = async () => {
     try {
       const response = await fetch(
-        `https://maps.googleapis.com/maps/api/directions/json?origin=${markers[0].latitude},${markers[0].longitude}&destination=${markers[markers.length - 1].latitude},${markers[markers.length - 1].longitude}&waypoints=${markers.slice(1, -1).map(m => `${m.latitude},${m.longitude}`).join('|')}&mode=walking&key=${GOOGLE_MAPS_KEY}`
+        `https://maps.googleapis.com/maps/api/directions/json?origin=${
+          markers[0].latitude
+        },${markers[0].longitude}&destination=${
+          markers[markers.length - 1].latitude
+        },${markers[markers.length - 1].longitude}&waypoints=${markers
+          .slice(1, -1)
+          .map((m) => `${m.latitude},${m.longitude}`)
+          .join("|")}&mode=walking&key=${GOOGLE_MAPS_KEY}`
       );
       const data = await response.json();
       console.log(data);
-      const estimatedTime = data.routes[0].legs.reduce((total, leg) => total + leg.duration.value, 0); // Total duration in seconds
+      const estimatedTime = data.routes[0].legs.reduce(
+        (total, leg) => total + leg.duration.value,
+        0
+      ); // Total duration in seconds
       setEstimatedTime(estimatedTime);
     } catch (error) {
       console.error(error);
@@ -118,7 +128,6 @@ export default function HomeScreen() {
       }
     );
   };
-
 
   useEffect(() => {
     getRouteTime();
@@ -165,10 +174,13 @@ export default function HomeScreen() {
             return (
               <Marker
                 key={index}
-                coordinate={{ latitude: marker.latitude, longitude: marker.longitude }}
+                coordinate={{
+                  latitude: marker.latitude,
+                  longitude: marker.longitude,
+                }}
                 title={marker.title}
               >
-                <Animated.View style={[styles.markerWrap,scaleStyle]}>
+                <Animated.View style={[styles.markerWrap, scaleStyle]}>
                   <CustomMarker image={marker.image} title={marker.title} />
                 </Animated.View>
               </Marker>
@@ -182,14 +194,19 @@ export default function HomeScreen() {
               return (
                 <MapViewDirections
                   key={index}
-                  origin={{ latitude: marker.latitude, longitude: marker.longitude }}
-                  destination={{ latitude: nextMarker.latitude, longitude: nextMarker.longitude }}
+                  origin={{
+                    latitude: marker.latitude,
+                    longitude: marker.longitude,
+                  }}
+                  destination={{
+                    latitude: nextMarker.latitude,
+                    longitude: nextMarker.longitude,
+                  }}
                   apikey={GOOGLE_MAPS_KEY}
                   strokeWidth={3}
                   mode="WALKING"
                   strokeColor="black"
                   precision="low"
-
                 />
               );
             }
@@ -212,7 +229,8 @@ export default function HomeScreen() {
           right: SPACING_FOR_CARD_INSET,
         }}
         contentContainerStyle={{
-          paddingHorizontal: Platform.OS === "android" ? SPACING_FOR_CARD_INSET : 0,
+          paddingHorizontal:
+            Platform.OS === "android" ? SPACING_FOR_CARD_INSET : 0,
         }}
         onScroll={Animated.event(
           [
@@ -220,42 +238,58 @@ export default function HomeScreen() {
               nativeEvent: {
                 contentOffset: {
                   x: mapAnimation,
-                }
+                },
               },
             },
           ],
           { useNativeDriver: true }
         )}
       >
-        {
-          markers.map((marker, index) => (
-            <View style={styles.card} key={index}>
-              <Image
-                source={marker.image}
-                style={styles.cardImage}
-              />
-              <View style={styles.textContent}>
-                <Text numberOfLines={1} style={styles.cardtitle}>{marker.title}</Text>
-                <Text numberOfLines={1} style={styles.cardDescription}>{marker.description}</Text>
-              </View>
-              <View style={styles.button}>
-                <TouchableOpacity
-                  style={[styles.textSign, {
-                    borderColor: Colors.text.primary,
-                    borderWidth: 1,
-                  }]}
-                // onPress={}   //aca iria para navegar a la pantalla de detalle de cada card
-                >
-                  <Text style={[styles.signIn, {
-                    color: Colors.text.primary,
-                  }]}>Ver más</Text>
-                </TouchableOpacity>
-              </View>
+        {markers.map((marker, index) => (
+          <View style={styles.card} key={index}>
+            <Image source={marker.image} style={styles.cardImage} />
+            <View style={styles.textContent}>
+              <Text numberOfLines={1} style={styles.cardtitle}>
+                {marker.title}
+              </Text>
+              <Text numberOfLines={1} style={styles.cardDescription}>
+                {marker.description}
+              </Text>
             </View>
-          ))
-        }
-      </Animated.ScrollView >
-    </View >
+            <View style={styles.button}>
+              <Link
+                href={{
+                  pathname: "/place-details/[markerId]",
+                  params: { markerId: marker.id },
+                }}
+                asChild
+              >
+                <TouchableOpacity
+                  style={[
+                    styles.textSign,
+                    {
+                      borderColor: Colors.text.primary,
+                      borderWidth: 1,
+                    },
+                  ]}
+                >
+                  <Text
+                    style={[
+                      styles.signIn,
+                      {
+                        color: Colors.text.primary,
+                      },
+                    ]}
+                  >
+                    Ver más
+                  </Text>
+                </TouchableOpacity>
+              </Link>
+            </View>
+          </View>
+        ))}
+      </Animated.ScrollView>
+    </View>
   );
 }
 
@@ -263,41 +297,41 @@ const styles = StyleSheet.create({
   container: { flex: 1 },
   map: { flex: 1 },
   animatedWrapper: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   searchBox: {
-    position: 'absolute',
-    marginTop: Platform.OS === 'ios' ? 40 : 20,
+    position: "absolute",
+    marginTop: Platform.OS === "ios" ? 40 : 20,
     flexDirection: "row",
-    backgroundColor: '#fff',
-    width: '90%',
-    alignSelf: 'center',
+    backgroundColor: "#fff",
+    width: "90%",
+    alignSelf: "center",
     borderRadius: 5,
     padding: 10,
-    shadowColor: '#ccc',
+    shadowColor: "#ccc",
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.5,
     shadowRadius: 5,
     elevation: 10,
   },
   chipsScrollView: {
-    position: 'absolute',
-    top: Platform.OS === 'ios' ? 90 : 80,
-    paddingHorizontal: 10
+    position: "absolute",
+    top: Platform.OS === "ios" ? 90 : 80,
+    paddingHorizontal: 10,
   },
   chipsIcon: {
     marginRight: 5,
   },
   chipsItem: {
     flexDirection: "row",
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderRadius: 20,
     padding: 8,
     paddingHorizontal: 20,
     marginHorizontal: 10,
     height: 35,
-    shadowColor: '#ccc',
+    shadowColor: "#ccc",
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.5,
     shadowRadius: 5,
@@ -358,18 +392,18 @@ const styles = StyleSheet.create({
     height: 30,
   },
   button: {
-    alignItems: 'center',
-    marginTop: 5
+    alignItems: "center",
+    marginTop: 5,
   },
   signIn: {
-    width: '100%',
+    width: "100%",
     padding: 5,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 3
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 3,
   },
   textSign: {
     fontSize: 14,
-    fontWeight: 'bold'
-  }
+    fontWeight: "bold",
+  },
 });

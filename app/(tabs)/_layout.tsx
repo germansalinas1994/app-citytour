@@ -45,7 +45,7 @@ export default function TabLayout() {
           ),
         }}
       />
-      <Tabs.Screen
+      {/* <Tabs.Screen
         name="detalle"
         options={{
           title: "Detalle",
@@ -53,7 +53,7 @@ export default function TabLayout() {
             <Ionicons name="search" size={28} color={color} />
           ),
         }}
-      />
+      /> */}
     </Tabs>
   );
 }
