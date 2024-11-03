@@ -18,3 +18,11 @@ web-build/
 
 expo-env.d.ts
 # @end expo-cli
+/.env
+/.envfede
+
+/.idea
+
+/.vscode
+
+.env

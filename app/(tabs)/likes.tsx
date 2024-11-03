@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: "outfit",
     color: 'black',
-  },
+  }
 });
 
 
