@@ -18,6 +18,7 @@ const CustomMarker = ({ image, title }) => (
 const styles = StyleSheet.create({
     markerWrapper: {
       alignItems: 'center',
+      justifyContent: 'center',
     },
     selectedMarkerWrapper: {
       borderWidth: 2,

@@ -63,8 +63,8 @@ export default function HomeScreen() {
               {
                 latitude,
                 longitude,
-                latitudeDelta: 0.05,
-                longitudeDelta: 0.05,
+                latitudeDelta: 0.01,
+                longitudeDelta: 0.01,
               },
               350
             );
@@ -83,7 +83,7 @@ export default function HomeScreen() {
 
     const scale = mapAnimation.interpolate({
       inputRange,
-      outputRange: [0.9, 1, 0.9],
+      outputRange: [0.8, 1, 0.8],
       extrapolate: "clamp",
     });
     return { scale };
@@ -148,8 +148,8 @@ export default function HomeScreen() {
           initialRegion={{
             latitude: LA_PLATA_COORDENADAS.latitude,
             longitude: LA_PLATA_COORDENADAS.longitude,
-            latitudeDelta: 0.05,
-            longitudeDelta: 0.05,
+            latitudeDelta: 0.03,
+            longitudeDelta: 0.03,
           }}
           showsUserLocation={true}
         >
