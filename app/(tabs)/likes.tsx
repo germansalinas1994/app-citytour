@@ -3,44 +3,6 @@ import React from 'react';
 import Colors from "../../constants/Colors";
 import { StyleSheet, Text, View, FlatList, Image } from 'react-native';
 import {markers} from '../../assets/markers';
-/*const puntosTuristicos = [
-  {
-    id: '1',
-    nombre: 'Estadio UNO',
-    descripcion: 'ESTUDIOOOOOOOOOO',
-    imagen: require('../../assets/images/canchaestudiantes.jpeg'), // Imagen local
-  },
-  {
-    id: '2',
-    nombre: 'Universidad Tecnológica Nacional',
-    descripcion: 'Facultad Regional La Plata',
-    imagen: require('../../assets/images/canchaestudiantes.jpeg'), // Imagen local
-  },
-  {
-    id: '3',
-    nombre: 'Lago del Bosque',
-    descripcion: 'Actividades como andar en barquito a pedal',
-    imagen: require('../../assets/images/canchaestudiantes.jpeg'), // Imagen local
-  },
-  {
-    id: '4',
-    nombre: 'Estadio UNO',
-    descripcion: 'ESTUDIOOOOOOOOOO',
-    imagen: require('../../assets/images/canchaestudiantes.jpeg'), // Imagen local
-  },
-  {
-    id: '5',
-    nombre: 'Universidad Tecnológica Nacional',
-    descripcion: 'Facultad Regional La Plata',
-    imagen: require('../../assets/images/canchaestudiantes.jpeg'), // Imagen local
-  },
-  {
-    id: '6',
-    nombre: 'Lago del Bosque',
-    descripcion: 'Actividades como andar en barquito a pedal',
-    imagen: require('../../assets/images/canchaestudiantes.jpeg'), // Imagen local
-  },
-]; */
 
 
 export default function PuntosTuristicosScreen() {
