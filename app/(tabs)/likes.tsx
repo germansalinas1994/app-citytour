@@ -1,9 +1,8 @@
-// Likes.tsx
 import React from 'react';
 import Colors from "../../constants/Colors";
-import { StyleSheet, Text, View, FlatList, Image } from 'react-native';
-import {markers} from '../../assets/markers';
-
+import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity } from 'react-native';
+import { markers } from '../../assets/markers';
+import { Link } from 'expo-router';
 
 export default function PuntosTuristicosScreen() {
   return (
@@ -14,19 +13,27 @@ export default function PuntosTuristicosScreen() {
       </View>
 
       <View style={styles.separator}>
-      <FlatList
-        data={markers} // Usamos los markers importados como data
-        keyExtractor={(item) => item.id.toString()} // Convierte el id a string para usarlo como clave
-        renderItem={({ item }) => (
-          <View style={styles.itemContainer}>
-            <Image source={item.image} style={styles.imagen} />
-            <View style={styles.textContainer}>
-              <Text style={styles.nombre}>{item.title}</Text>
-              <Text style={styles.descripcion}>{item.description}</Text>
-            </View>
-          </View>
-        )}
-      />
+        <FlatList
+          data={markers} // Usamos los markers importados como data
+          keyExtractor={(item) => item.id.toString()} // Convierte el id a string para usarlo como clave
+          renderItem={({ item }) => (
+            <Link
+              href={{
+                pathname: "/place-details/[markerId]",
+                params: { markerId: item.id },
+              }}
+              asChild
+            >
+              <TouchableOpacity style={styles.itemContainer}>
+                <Image source={item.image} style={styles.imagen} />
+                <View style={styles.textContainer}>
+                  <Text style={styles.nombre}>{item.title}</Text>
+                  <Text numberOfLines={3} style={styles.descripcion}>{item.description}</Text>
+                </View>
+              </TouchableOpacity>
+            </Link>
+          )}
+        />
       </View>
     </View>
   );
@@ -36,7 +43,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginBottom: 5,
-    marginTop:5, // Ajusta el margen inferior para controlar la separación
+    marginTop: 5,
     backgroundColor: Colors.varios.background,
     padding: 10,
   },
@@ -48,9 +55,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: Colors.varios.subicon,
     borderRadius: 15,
-    padding: 10, //separacion entre lo que está adentro y el borde
-    marginVertical: 8, //separacion entre rectangulos
-    marginHorizontal: 15, //separacion de los costados de la pantalla del celular
+    padding: 10,
+    marginVertical: 8,
+    marginHorizontal: 15,
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -59,9 +66,9 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   separator: {
-    height: 450, // Ajusta la altura si deseas un separador entre los contenedores
+    height: 450,
   },
-   imagen: {
+  imagen: {
     width: 80,
     height: 80,
     borderRadius: 8,
@@ -69,17 +76,17 @@ const styles = StyleSheet.create({
   },
   titleText: {
     fontFamily: "outfit-Medium",
-    color: Colors.varios.text, // 
-    fontSize: 32, // 
-    textAlign: 'center', // Asegura que el texto esté centrado
+    color: Colors.varios.text,
+    fontSize: 32,
+    textAlign: 'center',
     marginBottom: 10,
-    marginTop:60,
+    marginTop: 60,
   },
   subtitleText: {
     fontFamily: "outfit-Medium",
-    color: Colors.varios.text, // Cambia 'blue' por el color deseado
-    fontSize: 20, // Ajusta el tamaño de la fuente según sea necesario
-    textAlign: 'center', // Asegura que el texto esté centrado
+    color: Colors.varios.text,
+    fontSize: 20,
+    textAlign: 'center',
     marginBottom: 5,
   },
   textContainer: {
@@ -97,7 +104,4 @@ const styles = StyleSheet.create({
     color: 'black',
   }
 });
-
-
-
 
