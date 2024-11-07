@@ -157,8 +157,8 @@ export default function HomeScreen() {
           initialRegion={{
             latitude: LA_PLATA_COORDENADAS.latitude,
             longitude: LA_PLATA_COORDENADAS.longitude,
-            latitudeDelta: 0.03,
-            longitudeDelta: 0.03,
+            latitudeDelta: 0.01,
+            longitudeDelta: 0.01,
           }}
           showsUserLocation={true}
         >
