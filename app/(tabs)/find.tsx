@@ -89,6 +89,18 @@ export default function HomeScreen() {
     return { scale };
   });
 
+  const onMArkerPress = (mapEventData) => {
+    const markerID = mapEventData._targetInst.return.key;
+    let x = (markerID * CARD_WIDTH) + (markerID * 20);
+    if (Platform.OS === 'ios') {
+      x = x - SPACING_FOR_CARD_INSET;
+    }
+
+    _scrollView.current.scrollTo({ x: x, y: 0, animated: true });
+  };
+
+
+
   //#region region // tiempo estimado
 
   const getRouteTime = async () => {
@@ -167,10 +179,11 @@ export default function HomeScreen() {
                 key={index}
                 coordinate={{ latitude: marker.latitude, longitude: marker.longitude }}
                 title={marker.title}
+                onPress={(e) => onMArkerPress(e)}
               >
-                <Animated.View style={[styles.markerWrap,scaleStyle]}>
+                {/* <Animated.View style={[styles.markerWrap, scaleStyle]}> */}
                   <CustomMarker image={marker.image} title={marker.title} />
-                </Animated.View>
+                {/* </Animated.View> */}
               </Marker>
             );
           })}
@@ -348,14 +361,14 @@ const styles = StyleSheet.create({
     color: "#444",
   },
   markerWrap: {
-    // alignItems: "center",
-    // justifyContent: "center",
-    width: 50,
-    height: 50,
+    alignItems: "center",
+    justifyContent: "center",
+    width: 60,
+    height: 60,
   },
   marker: {
-    width: 30,
-    height: 30,
+    width: 20,
+    height: 20,
   },
   button: {
     alignItems: 'center',
@@ -371,5 +384,6 @@ const styles = StyleSheet.create({
   textSign: {
     fontSize: 14,
     fontWeight: 'bold'
-  }
+  },
+  
 });
