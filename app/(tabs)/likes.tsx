@@ -1,8 +1,8 @@
-// PuntosTuristicosScreen.tsx
 import React from 'react';
-import { StyleSheet, Text, View, FlatList, Image } from 'react-native';
 import Colors from "../../constants/Colors";
-import { markers } from "../../assets/markers"; // Importa los markers
+import { StyleSheet, Text, View, FlatList, Image, TouchableOpacity } from 'react-native';
+import { markers } from '../../assets/markers';
+import { Link } from 'expo-router';
 
 export default function PuntosTuristicosScreen() {
   return (
@@ -14,16 +14,24 @@ export default function PuntosTuristicosScreen() {
 
       <View style={styles.separator}>
         <FlatList
-          data={markers}
-          keyExtractor={(item) => item.id.toString()} // Convertir el id a string
+          data={markers} // Usamos los markers importados como data
+          keyExtractor={(item) => item.id.toString()} // Convierte el id a string para usarlo como clave
           renderItem={({ item }) => (
-            <View style={styles.itemContainer}>
-              <Image source={item.image} style={styles.imagen} />
-              <View style={styles.textContainer}>
-                <Text style={styles.nombre}>{item.title}</Text>
-                <Text style={styles.descripcion}>{item.description}</Text>
-              </View>
-            </View>
+            <Link
+              href={{
+                pathname: "/place-details/[markerId]",
+                params: { markerId: item.id },
+              }}
+              asChild
+            >
+              <TouchableOpacity style={styles.itemContainer}>
+                <Image source={item.image} style={styles.imagen} />
+                <View style={styles.textContainer}>
+                  <Text style={styles.nombre}>{item.title}</Text>
+                  <Text numberOfLines={3} style={styles.descripcion}>{item.description}</Text>
+                </View>
+              </TouchableOpacity>
+            </Link>
           )}
         />
       </View>
@@ -32,15 +40,16 @@ export default function PuntosTuristicosScreen() {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    marginBottom: 5,
+    marginTop: 5,
+    backgroundColor: Colors.varios.background,
+    padding: 10,
+  },
   mainContainer: {
     flex: 1,
     backgroundColor: Colors.varios.background,
-  },
-  container: {
-    flex: 1,
-    marginVertical: 5,
-    backgroundColor: Colors.varios.background,
-    padding: 10,
   },
   itemContainer: {
     flexDirection: 'row',
@@ -57,7 +66,7 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   separator: {
-    height: 550, // Ajusta según lo que necesites
+    height: 450,
   },
   imagen: {
     width: 80,
@@ -70,7 +79,7 @@ const styles = StyleSheet.create({
     color: Colors.varios.text,
     fontSize: 32,
     textAlign: 'center',
-    marginVertical: 10,
+    marginBottom: 10,
     marginTop: 60,
   },
   subtitleText: {
@@ -93,5 +102,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: "outfit",
     color: 'black',
-  },
+  }
 });
+

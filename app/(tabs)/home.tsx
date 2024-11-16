@@ -61,7 +61,18 @@ export default function Home() {
               width: width * 0.8,
             }}
           >
-            ¡Bienvenido a La Plata Tour!
+            ¡Bienvenido a
+          </Text>
+          <Text
+            style={{
+              fontFamily: "outfit-Bold",
+              fontSize: 30,
+              textAlign: "center",
+              color: Colors.text.white,
+              width: width * 0.8,
+            }}
+          >
+            La Plata Tour!
           </Text>
           <Text
             style={{
@@ -93,7 +104,7 @@ export default function Home() {
               style={{
                 padding: 14,
                 marginTop: 30,
-                backgroundColor: Colors.background.primaryButton,
+                backgroundColor: Colors.varios.background,
                 width: width * 0.5,
                 borderRadius: 20,
                 shadowColor: "#000",
